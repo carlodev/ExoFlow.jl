@@ -138,4 +138,5 @@ ExoFlow.main((params, backend))
 The example above run in the `REPL` emulating a parallel run over 4 processors (you can see it by the options `:np_x` and `:np_y`). 
 The final results is a .pvd file, which can be open with ParaView. It is an index file of .pvtu files in `Results/` folder. Each .pvtu file is the solution at a single time step and each .pvtu is and index file of .pvtu files. Each of this .vtu files is the portion of one processor of the solution of a spefic time step.
 
-Changing the backend to `MPIBackend()` allows it to run in MPI. 
+!!! info "numeric info" 
+    Changing the backend to `MPIBackend()` allows it to run in MPI. 
