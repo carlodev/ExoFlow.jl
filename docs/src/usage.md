@@ -4,7 +4,7 @@ Problem Settings:
 - `:N` = number of divisions for each dimension. The example creates a 100x100 grid.
 - `:D` = dimension. It can be 2 or 3.
 - `:order` = order of the elements. At the moment just the order 1 is tested.
-- `:case` it can be `"TaylorGree", "LidDriven", "Cylinder", "Channel", "Airfoil"`.
+- `:case` it can be `"TaylorGreen", "LidDriven", "Cylinder", "Channel", "Airfoil"`.
 - `:u_in` the inlet velocity for `"Airfoil"` and `"Cylinder"`, or the lid velocity for `"LidDriven`
 - `:c` chord length in the `"Airfoil"` case, or dimension of lid for `"LidDriven"`. It is used to compute the viscosity `:ν` from the Reynolds and velocity
 - `:Re` Reynolds number. 
@@ -29,7 +29,7 @@ Numeric Settings
 - `:solver` for solving the equations, it can be `:julia` or `:petsc`. The general advice is to use `:petsc` expecially in `MPI`
 - `:method` can be `:SUPG` or `:VMS`
 - `:Cᵢ` is a vector containing stabilization coefficients used for the `:VMS`. The suggested values are `[4,36]`, 10.1016/j.compfluid.2008.10.003
-- `:options` the settings for the petsc solver. It call the function `petsc_options(args)`, where `args` can be `:ksplu`, `:kspgamg` for linear case, `:sneslu`, `:snesgamg` for a non linear case. For a more detail explanation[`petsc_options`](@ref)
+- `:options` the settings for the petsc solver. It call the function `petsc_options(args)`, where `args` can be `:ksplu`, `:kspgamg` for linear case, `:sneslu`, `:snesgamg` for a non linear case. For a more detail explanation [`petsc_options`](@ref)
 - `:linear` can be `true` or `false`. It linearizes the convective term using a Taylor expansion
 - `:steady` is set to `false`. At the moment is not implemented `steady` solution of the equations 
 
@@ -50,7 +50,7 @@ Partitioning Settings
 - `backend` can be `MPIBackend()` or `SequentialBackend()`. 
 
 Restarting Settings
--`:restart` can be `true` or `false`. If `false` the initial conditions are computed internally using `:u_in` or analytical solution (`"TaylorGreen"`). 
+- `:restart` can be `true` or `false`. If `false` the initial conditions are computed internally using `:u_in` or analytical solution (`"TaylorGreen"`). 
 - `:restart_file` is used only if `:restart`is true. It is a `.csv` file created from ParaView using the SpreadSheet. It has the list of fo velocity and pressure in each node. It is better to run `clean grid` in Paraview before for get rid of duplicate points.
 
 Turbulence Settings
@@ -136,5 +136,6 @@ ExoFlow.main((params, backend))
 ```
 
 The example above run in the `REPL` emulating a parallel run over 4 processors (you can see it by the options `:np_x` and `:np_y`). 
+The final results is a .pvd file, which can be open with ParaView. It is an index file of .pvtu files in `Results/` folder. Each .pvtu file is the solution at a single time step and each .pvtu is and index file of .pvtu files. Each of this .vtu files is the portion of one processor of the solution of a spefic time step.
 
 Changing the backend to `MPIBackend()` allows it to run in MPI. 

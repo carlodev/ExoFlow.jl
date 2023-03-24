@@ -1,4 +1,7 @@
-using Documenter, ExoFlow
+push!(LOAD_PATH,"../src/")
+
+using Documenter
+using ExoFlow
 
 makedocs(
     sitename = "ExoFlow.jl",
@@ -7,11 +10,13 @@ makedocs(
         "Introduction" => "index.md",
         "Usage" => "usage.md",
         "MPI Run" => "mpi.md",
-        "Taylor Green" => "Case/taylorgreen.md",
-        "Lid Driven Cavity Flow" => "Case/liddriven.md",
-        "Airfoil" => "Cylinder/cylinder.md",
-        "Channel" => "Case/channel.md",
-        "Airfoil" => "Case/airfoil.md",
+        "Numeric Settings" => "numericsettings.md",
+        "Cases" =>[
+        "Taylor Green" => "Cases/taylorgreen.md",
+        "Lid Driven Cavity Flow" => "Cases/liddriven.md",
+        "Cylinder" => "Cases/cylinder.md",
+        "Channel" => "Cases/channel.md",
+        "Airfoil" => "Cases/airfoil.md"],
         "Reference" => "ref.md"
     ],
 )

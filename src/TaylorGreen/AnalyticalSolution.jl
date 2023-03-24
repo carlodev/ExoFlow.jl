@@ -1,4 +1,9 @@
-function analytical_solution(diameter, Vs, Ua, Va, ν) 
+"""
+  analytical_solution(diameter::Int64, Vs::Float64, Ua::Float64, Va::Float64, ν::Float64) 
+
+It provides the anlytical solution for the Taylor Green Vortex case.
+"""
+function analytical_solution(diameter::Float64, Vs::Float64, Ua::Float64, Va::Float64, ν::Float64) 
   Tx(x, t) = pi / diameter * (x[1] - Ua * t)
   Ty(x, t) = pi / diameter * (x[2] - Va * t)
   Et(t) = exp(-(2 * ν * t * pi^2) / (diameter^2))

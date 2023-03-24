@@ -9,7 +9,7 @@ using SyntheticEddyMethod
 #channel body force = 0.00337204, ν=0.0001472, u_in =1.0
 #lid driven u_in = 0
 
-function driver_test(case, method, odemethod; linear = true, D = 2 )
+function driver_test(case, method, odemethod; linear = true, D = 2, mesh_file = "DU89_precompile_2D.msh" )
 include("Turbulence_Settings.jl")
 
 if case == "Airfoil"
@@ -58,7 +58,7 @@ function instantiate_parameters()
     :benchmark_mode => true,
     :printinitial => false,
 
-    :mesh_file => "DU89_precompile_2D.msh",
+    :mesh_file => mesh_file,
     :Cᵢ => [4, 36],    
     :options => petsc_options(petsc_opt),
 

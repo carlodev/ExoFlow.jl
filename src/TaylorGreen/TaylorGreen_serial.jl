@@ -1,9 +1,9 @@
 include("../ExoFlow.jl")
 include("SpaceConditions.jl")
 include("AnalyticalSolution.jl")
-function petsc_options()
-  "-snes_type newtonls -snes_linesearch_type basic -snes_linesearch_damping 1.2 -snes_rtol 0.0 -snes_stol 1.0e-10 -snes_atol 0.0 -snes_monitor -pc_type asm -sub_pc_type lu   -ksp_type pgmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true"
-end
+# function petsc_options()
+#   "-snes_type newtonls -snes_linesearch_type basic -snes_linesearch_damping 1.2 -snes_rtol 0.0 -snes_stol 1.0e-10 -snes_atol 0.0 -snes_monitor -pc_type asm -sub_pc_type lu   -ksp_type pgmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true"
+# end
 
 params = Dict(
   :N => 32,

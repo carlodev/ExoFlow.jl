@@ -6,7 +6,7 @@ function run_taylorgreen(params)
 
   diameter = 0.5 #0.5 [m] vortex dimension
 
-  Vs = 1 #1[m/s]swirling speed
+  Vs = 1.0 #1[m/s]swirling speed
   Ua = 0.3 #0.3 [m/s]convective velocity in x
   Va = 0.2 #0.2 [m/s]convective velocity in y
   params[:ν] = 0.001 #0.001 m2/s 

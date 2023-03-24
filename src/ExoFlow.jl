@@ -81,6 +81,11 @@ include(joinpath("Plate","Plate.jl"))
 include(joinpath("Plate","Blasius.jl"))
 include(joinpath("TaylorGreen","TaylorGreen.jl"))
 
+
+export analytical_solution
+
+
+
 export hf_gen!
 export add_centre_tag!
 export printmodel

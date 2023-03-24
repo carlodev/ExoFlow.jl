@@ -18,10 +18,10 @@ function instantiate_parameters()
     
     :t0 => 0.0,
     :dt => 0.01,
-    :tF => 0.05,
+    :tF => 1.0,
     :t_endramp => 0.0,
 
-    :case => "TaylorGreen",
+    :case => "LidDriven",
     :solver => :petsc,
     :method => :VMS,
     :ode_method => :ThetaMethod,
