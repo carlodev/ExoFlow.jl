@@ -1,0 +1,1 @@
+R. Moser, J. Kim, R. Mansour, DNS of turbulent channel flow up toRe= 590, Phys. Fluids 11 (1999) 943–945
