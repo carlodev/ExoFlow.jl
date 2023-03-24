@@ -45,7 +45,7 @@ using Dates
 using Revise
 using XLSX
 using Interpolations
-
+using LinearAlgebra
 using SyntheticEddyMethod
 
 include("Main.jl")

@@ -1,14 +1,17 @@
 using ExoFlow
 using PartitionedArrays
+using SyntheticEddyMethod
 
 
-include("Turbulence_Settings.jl")
+
 
 
 #channel body force = 0.00337204, ν=0.0001472, u_in =1.0
 #lid driven u_in = 0
 
 function driver_test(case, method, odemethod; linear = true, D = 2 )
+include("Turbulence_Settings.jl")
+
 if case == "Airfoil"
 mesh_gen = true
 else
@@ -73,7 +76,9 @@ function instantiate_parameters()
     :start_condition => :turbulent,
     :restart => false,
     :restart_file => "DU89_0p85.csv",
-    :TI =>0.01,
+    :TI =>0.0,
+    :Vbox=> turbulence_box(),
+    :Re_filename=> "none", 
       )
 
     parameters = initialize_parameters(parameters)

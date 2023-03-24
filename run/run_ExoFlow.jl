@@ -1,15 +1,15 @@
 using ExoFlow
 using PartitionedArrays
-
-
 include("Turbulence_Settings.jl")
+
+
 
 
 #channel body force = 0.00337204, ν=0.0001472, u_in =1.0
 #lid driven u_in = 0
 
 
-backend = SequentialBackend() #or MPIBackend() SequentialBackend()
+backend = MPIBackend() #or MPIBackend() SequentialBackend()
 function instantiate_parameters()
     parameters = Dict(
     :N => 100,
@@ -61,6 +61,8 @@ function instantiate_parameters()
     :restart => false,
     :restart_file => "DU89_0p85.csv",
     :TI =>0.01,
+    :Vbox => turbulence_box(),
+    :Re_filename => "none"
       )
 
     parameters = initialize_parameters(parameters)

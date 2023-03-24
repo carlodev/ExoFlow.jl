@@ -89,7 +89,7 @@ function initialize_parameters(params::Dict{Symbol, Any})
 
     "Set the turbulence parameters, in specific the cache for generating the Eddies"
     if params[:case] =="Airfoil" || params[:case] =="Plate" || params[:case] =="Channel"
-        Vboxinfo = turbulence_box()
+        Vboxinfo = params[:Vbox] #turbulence_box()
         Re = set_reynolds_stress(params::Dict)
         sem_cache = SEMcache(Vboxinfo, params[:dt], params[:u_in], Vboxinfo.σ, Re, params[:t0], nothing)
         params = merge!(params, Dict(:sem_cache => sem_cache))

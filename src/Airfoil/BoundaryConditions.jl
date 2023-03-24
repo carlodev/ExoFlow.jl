@@ -1,5 +1,5 @@
 function bc_airfoil(params)
-    @unpack D, u_in, t_endramp = params
+    @unpack D, u_in, t_endramp, TI = params
     
     #u_free(x,t) = VectorValue(4*umax/0.41^2*(0.205^2 - x[2]^2),0) #parabolic inlet
     """ No ramp
@@ -16,7 +16,9 @@ function bc_airfoil(params)
 
     #No generation of Eddies during ramping
     uin0(t) = (t < t_endramp) ? 0.0 : 1
-    u_SEM(x,t) = u_free(x,t) .+ uin0(t) .* generation_u_fluct!(x,t, params[:sem_cache])
+    
+    u_SEM(x,t) = (TI == 0.0) ? u_free(x,t) : u_free(x,t) .+ uin0(t) .* generation_u_fluct!(x,t, params[:sem_cache])
+
     u_SEM(t::Real) = x -> u_SEM(x,t)
     
 

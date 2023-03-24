@@ -1,3 +1,5 @@
+using SyntheticEddyMethod
+
 function turbulence_box()
     Δy = 0.05 / 20
     Δz = 0.2 / 10
@@ -11,6 +13,5 @@ function turbulence_box()
 
     # N = Vboxinfo.N #you can override it 
     return Vboxinfo
-
 end
 
