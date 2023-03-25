@@ -49,7 +49,7 @@ Parameters  = "0.12.3"
 PartitionedArrays  = "0.2.15"
 Revise = "3.5.1"
 SparseMatricesCSR  ="0.6.7"
-SyntheticEddyMethod = "0.4.0" 
+SyntheticEddyMethod = "0.3.0" 
 XLSX = "0.8.4"
 
 [extras]
