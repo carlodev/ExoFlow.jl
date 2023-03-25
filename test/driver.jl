@@ -40,7 +40,7 @@ function instantiate_parameters()
     :solver => :petsc,
     :method => method,
     :ode_method => odemethod,
-    :θ=>[0.5, 1.0],
+    :θ=>1.0,
     :ρ∞ => 1.0,
     :Re => 1_000,
     :c => 1, #chord lenght [m], used for naca (=1), cylinder (=0.1), liddriven = (1), 0.5
