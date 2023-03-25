@@ -2,6 +2,7 @@
     petsc_options(prec::Symbol)
 
 The function has some solver options for PETSc solver. The user can set the argument of the function:
+    
     - `:snesgamg` for using a Geometric Algebraic MultiGrid preconditioner and the Newton method for solving a non linear problem
     - `:kspgamg` for using a Geometric Algebraic MultiGrid preconditioner and the gmres method for solving a linear problem
     - `:sneslu` for using an Additive Shwarz Method as preconditioner and a LU factorization as sub-preconditioner and the Newton method for solving a non linear problem

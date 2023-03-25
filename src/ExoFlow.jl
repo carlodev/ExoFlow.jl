@@ -100,4 +100,35 @@ export solve_case
 export petsc_options
 export initialize_parameters
 export set_reynolds_stress
+
+#Conservation
+export conservations_equations
+export derivative_conservations_equations
+
+export create_ũ_vector
+export update_ũ
+export update_ũ_vector!
+export update_linear!
+
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+export 
+
 end # module

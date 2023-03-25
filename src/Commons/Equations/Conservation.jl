@@ -1,4 +1,18 @@
-function conservations_equations(params)
+"""
+    conservations_equations(params::Dict{Symbol,Any})
+
+It provides the Navier Stokes equations: continuity and momentum. The equations are different if the problem is linearized or not.
+Conitnuity:
+``\\nabla\\cdot u = 0``
+
+Momentum:
+``\\dfrac{\\partial u}{\\partial t} + u \\cdot \\nabla(u) + \\nabla (p) + \\nu \\Delta u= 0``
+
+Momentum linearized:
+``\\tilde{u} \\cdot \\nabla(u) + \\nabla (p) + \\nu \\Delta u = 0``
+where ``\\tilde{u}`` is the approximation of the convective velocity.
+"""
+function conservations_equations(params::Dict{Symbol,Any})
     #Momentum
     @unpack linear, steady, ν, hf= params
     if linear
@@ -32,8 +46,20 @@ function conservations_equations(params)
 
 end
 
+"""
+    derivative_conservations_equations(params::Dict{Symbol,Any})
 
-function derivative_conservations_equations(params)
+It provides the spatial derivative of the Navier Stokes equations: continuity and momentum. The equations are different if the problem is linearized or not.
+Conitnuity:
+``\\nabla\\cdot du = 0``
+
+Momentum:
+`` du \\cdot \\nabla(u) + u \\cdot \\nabla(du) + \\nabla (dp) + \\nu \\Delta du= 0``
+
+Momentum linearized:
+``\\tilde{u} \\cdot \\nabla(u) + \\nabla (p) + \\nu \\Delta u = 0``
+"""
+function derivative_conservations_equations(params::Dict{Symbol,Any})
     @unpack linear, ν = params
     if linear
         @unpack ũ = params
@@ -54,14 +80,6 @@ function derivative_conservations_equations(params)
     else
         return dRm, dRc
     end
-
-end
-
-
-
-
-function time_derivative_conservations_equation()
-    
 
 end
 

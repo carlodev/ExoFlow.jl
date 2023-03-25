@@ -1,16 +1,26 @@
 #MPI Backend
+"""
+It instantiate an AbstactVector of 4 elements. Each element is an AbstractVector where the values of the velocity in each node is stored.
+The first element refers to the time step n, the second to the time step n-1, the third n-2 and the last n-3.
+"""
 function create_ũ_vector(zfields::MPIData)
     zfv = deepcopy(get_part(zfields))
     zfv1 = get_free_dof_values(zfv)
     return [zfv1, zfv1, zfv1, zfv1]
 end
 
+"""
+It updates the vector which stores the values of velocity at previous time steps.
+"""
 function  update_ũ_vector!(ũ_vec::Vector{Vector{Float64}}, uhfields::MPIData)
     uh_new = get_free_dof_values(get_part(uhfields))
     circshift!(ũ_vec,-1)
     ũ_vec[1] = deepcopy(uh_new)
 end
-  
+
+"""
+It updates the convective velocity exitmation ``\\tilde{u}`` for the approximation of the non linear term: ``\\tilde{u} \\cdot \\nabla(u)``
+"""
 function update_ũ(ũ_vec::Vector{Vector{Float64}}, coeff::Vector{Float64})
     updt_ũ = ũ_vec[1]*coeff[1] + ũ_vec[2] *coeff[2] + ũ_vec[3] *coeff[3] + ũ_vec[4]*coeff[4]
     return updt_ũ
@@ -25,6 +35,9 @@ end
 
 
 #Sequential Backend
+"""
+  create_ũ_vector(zfields::SequentialData)
+"""
 function create_ũ_vector(zfields::SequentialData)
     u_vec = Vector[]
     for p = 1:1:length(zfields.parts)
@@ -62,7 +75,7 @@ end
 
 
 """
-  update_linear!(params::Dict{Symbol,Any})
+    update_linear!(params::Dict{Symbol,Any})
 
 Wrapper function for updating the ũ_vector containing the speed values at previous time steps 
 and ũ which is the approximation of ũ for the non linear terms, ũ⋅(∇u)
