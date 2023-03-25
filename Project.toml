@@ -37,10 +37,10 @@ Documenter =  "0.27.24"
 DocumenterTools=  "0.1.16"
 FileIO ="1.16.0"
 FillArrays = "0.12.8"
-Gridap = "0.17.17" `https://github.com/carlodev/Gridap.jl#Thetamethod_multifield`
-GridapDistributed = "0.2.7" `https://github.com/carlodev/GridapDistributed.jl#Thetamethod_multifield`
+Gridap = "0.17.17" 
+GridapDistributed = "0.2.7"
 GridapGmsh = "0.6.1"
-GridapPETSc = "0.4.4" `https://github.com/carlodev/GridapPETSc.jl#master`        
+GridapPETSc = "0.4.4"
 Interpolations  = "0.14.7"
 JLD2  = "0.4.31"
 LineSearches  = "7.2.0"
@@ -49,7 +49,7 @@ Parameters  = "0.12.3"
 PartitionedArrays  = "0.2.15"
 Revise = "3.5.1"
 SparseMatricesCSR  ="0.6.7"
-SyntheticEddyMethod = "0.4.0" `https://github.com/carlodev/SyntheticEddyMethod.jl#map_eddy`
+SyntheticEddyMethod = "0.4.0" 
 XLSX = "0.8.4"
 
 [extras]
