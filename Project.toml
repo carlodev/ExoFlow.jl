@@ -31,6 +31,26 @@ XLSX = "fdbf4ff8-1666-58a4-91e7-1b58723a45e0"
 
 [compat]
 julia = "1.8.2"
+CSV ="0.10.9"
+DataFrames = "1.5.0"
+Documenter =  = 0.27.24"
+DocumenterTools=  0.1.16"
+FileIO "1.16.0"
+FillArrays = "0.12.8"
+Gridap = "0.17.17" `https://github.com/carlodev/Gridap.jl#Thetamethod_multifield`
+GridapDistributed = "0.2.7" `https://github.com/carlodev/GridapDistributed.jl#Thetamethod_multifield`
+GridapGmsh = "0.6.1"
+GridapPETSc = "0.4.4" `https://github.com/carlodev/GridapPETSc.jl#master`        
+Interpolations  = "0.14.7"
+JLD2  = "0.4.31"
+LineSearches  = "7.2.0"
+MPI = "0.19.2
+Parameters  = "0.12.3"
+PartitionedArrays  = "0.2.15"
+Revise = "3.5.1"
+SparseMatricesCSR  ="0.6.7"
+SyntheticEddyMethod = "0.4.0" `https://github.com/carlodev/SyntheticEddyMethod.jl#map_eddy`
+XLSX = "0.8.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
