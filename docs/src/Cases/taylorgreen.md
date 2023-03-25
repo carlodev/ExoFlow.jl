@@ -1,7 +1,8 @@
 # Taylor Green Vortex
+![Taylor Green](https://carlodev.github.io/ExoFlow.jl/dev/tg.png)
+![Taylor Green](https://carlodev.github.io/ExoFlow.jl/dev/Taylor_Vortex.png)
 
-![Taylor Green](../../figs/tg.png)
-![Taylor Green](../../figs/Taylor_Vortex.png)
+
 
 It solves the 2D Taylor Green Vortex case. It is the only case where analtical solution are available:
 

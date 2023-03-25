@@ -1,5 +1,5 @@
 # Airfoil
-![SD7003 profile at Reynolds 60000](../../figs/sd7003img.png)
+![SD7003 profile at Reynolds 60000](https://carlodev.github.io/ExoFlow.jl/dev/sd7003.png)
 
 It is one of the most complex and intersting case. The user has to create a proper mesh in [`gmsh`](https://gmsh.info/) setting the following physical boundaries:
 - `inlet` for the inlet
