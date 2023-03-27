@@ -1,6 +1,10 @@
 #Functions for computing forces
 
+"""
+    forces_domain(model, force_tags, degree)
 
+For a given `force_tags` in the `model` it provides the triangulation, the measure and the normal vector.
+"""
 function forces_domain(model, force_tags, degree)
     Γ = BoundaryTriangulation(model; tags=force_tags) 
     dΓ = Measure(Γ,degree)
@@ -8,7 +12,11 @@ function forces_domain(model, force_tags, degree)
     Γ, dΓ, n_Γ
 end
 
+"""
+    compute_forces(p, u, n_Γ, dΓ, ρ, ν, tn)
 
+It computes the pressure and friction forces.
+"""
 function compute_forces(p, u, n_Γ, dΓ, ρ, ν, tn)
     μ = ρ*ν
     Fp = sum(∫(p⋅n_Γ)dΓ) #force from the pressure distribution
@@ -18,7 +26,7 @@ function compute_forces(p, u, n_Γ, dΓ, ρ, ν, tn)
     return [tn, Fp[1], Fp[2], Friction[1], Friction[2]]
 end
 
-function initialize_force_params(force_params, case, D, ν)
+function initialize_force_params(force_params, case, D::Int64, ν::Float64)
     if force_params !== nothing
     force_tags = force_params[:force_tags]
     ρ = force_params[:ρ]
@@ -40,6 +48,13 @@ end
 
 
 #Write force params
+"""
+    write_forces(params::Dict{Symbol, Any}, uh_tn, ph_tn, tn::Float64)
+
+It writes on a csv file the forces over the body (airfoil or cylinder). 
+It writes 5 columns: time step, pressure force in x direction, pressure force in y direction,
+friction force in x direction, friction force in y direction.
+"""
 function write_forces(params::Dict{Symbol, Any}, uh_tn, ph_tn, tn::Float64)
     force_params = params[:force_params] #more compact
 

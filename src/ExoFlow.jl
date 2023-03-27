@@ -131,12 +131,18 @@ export VMS
 export VMS_lin
 
 #Restart
-export 
-export 
-export 
-export 
-export 
-export 
+export find_idx
+export uh
+export ph
+export uh_restart
+export ph_restart
+export restart_uh_field
+export restart_ph_field
+
+#Forces
+export forces_domain
+export compute_forces
+export write_forces
 export 
 export 
 export 

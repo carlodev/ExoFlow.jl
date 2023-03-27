@@ -56,3 +56,11 @@ solve_case
 
 initialize_parameters
 ```
+
+
+## Forces
+```@docs
+forces_domain
+compute_forces
+write_forces
+```
