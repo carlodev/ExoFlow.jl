@@ -1,6 +1,9 @@
 
+"""
+    initialize_parameters(params::Dict{Symbol, Any})
 
-
+It makes some checks on the validity of the input provided by the user and add some additional information.
+"""
 function initialize_parameters(params::Dict{Symbol, Any})
     #processor partition, different if the mesh is internally generated or imported from a .msh file
      if params[:mesh_gen]

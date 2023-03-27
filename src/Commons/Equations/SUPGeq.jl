@@ -1,4 +1,8 @@
-
+"""
+It computes the dimension of each cell of the computational domain. It uses the approximation:
+``h = M^{1/D}``
+where h is the cell dimension, M the cell measure (surface for 2D, volume for 3D) and D is the Dimension (2 or 3)
+"""
 function h_param(Ω::GridapDistributed.DistributedTriangulation, D::Int64)
     h = map_parts(Ω.trians) do trian
         h_param(trian, D)
@@ -16,6 +20,9 @@ end
 
 #Stabilization parameters
 #Momentum stabilization
+"""
+Stabilization parameter for momentum equation for the SUPG.
+"""
 function τ(u, h, ν::Float64, dt::Float64)
         r = 1
         τ₂ = h^2 / (4 * ν)
@@ -33,13 +40,16 @@ function τ(u, h, ν::Float64, dt::Float64)
 end
     
 #Continuity stabilization
+"""
+Stabilization parameter for continuity equation for the SUPG.
+"""
 τb(u, h, ν::Float64, dt::Float64) = (u ⋅ u) * τ(u, h, ν, dt)
 
 
 
 """
-
-SUPG non linear forumulation
+SUPG non linear variational forumulation. It calles the [`conservations_equations`](@ref) and [`derivative_conservations_equations`](@ref).
+It provides the equations set, the jacobian and the time jacobian.
 """
 function SUPG(h, params::Dict{Symbol, Any})
     @unpack ν, dt, dΩ, hf, linear, θ = params
@@ -84,9 +94,10 @@ function SUPG(h, params::Dict{Symbol, Any})
 
 end
 
-"""
 
-SUPG linearized
+"""
+SUPG linear variational forumulation. It calles the [`conservations_equations`](@ref) and [`derivative_conservations_equations`](@ref). 
+The terms are divided between mass matrix, stifness matrix and right hand side.
 """
 function SUPG_lin(h, params::Dict{Symbol, Any})
     @unpack ν, dt, dΩ, hf, linear, ũ = params

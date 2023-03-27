@@ -7,6 +7,15 @@ At the moment it is not a registered Julia package. For installing, from the `RE
 (@1.8) pkg> add https://github.com/carlodev/ExoFlow.jl 
 ```
 
+It uses some custom forks of registered julia packages which need to be installed manually. For installing, from the `REPL` just press `]`.
+```example
+(@1.8) pkg> add https://github.com/carlodev/Gridap.jl#Thetamethod_multifield
+(@1.8) pkg> add https://github.com/carlodev/GridapDistributed.jl#Thetamethod_multifield
+(@1.8) pkg> add https://github.com/carlodev/SyntheticEddyMethod.jl#master
+(@1.8) pkg> add https://github.com/carlodev/GridapPETSc.jl#master
+```
+
+
 For a complete and smooth experience is suggested to install also the free software [ParaView](https://www.paraview.org/) which allows to graphically visualize the results.
 
 ## Introduction

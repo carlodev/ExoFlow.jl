@@ -3,8 +3,13 @@
 VMS implementation, based on Bazilevs et al. DOI: 10.1016/j.cma.2007.07.016
 """
 
-
 #VMS parameters
+
+"""
+It provides the set of stabilization parameters for the VMS: G, GG, gg. 
+GG comes from the inverse of the jacobian of the map between reference and physical domain. It is exactly the cell dimension obtained by [`h_param`](@ref) for orthogonal carthesian grids.
+
+"""
 function G_params(Ω::GridapDistributed.DistributedTriangulation, params)
   @time G, GG, gg = map_parts(Ω.trians) do trian
 
@@ -59,7 +64,10 @@ function G_params(trian::Gridap.Geometry.BodyFittedTriangulation, params) #trian
 end #end G_params - Triangulation
 
 
-  #Stabilization paramameter momentum
+#Stabilization paramameter momentum
+"""
+Stabilization parameter for momentum equation for the VMS.
+"""
   function τm(uu, G, GG, Cᵢ1::Int64, Cᵢ2::Int64,  ν::Float64,dt::Float64)
     τ₁ = Cᵢ1 * (2 / dt)^2 #Here, you can increse the 2 if CFL high
     τ₃ = Cᵢ2 * (ν^2 * GG)
@@ -88,12 +96,18 @@ end #end G_params - Triangulation
     return (τ₁ .+ τ₂ .+ τ₃) .^ (-1 / 2)
   end
 
-  #Stabilization paramameter continuity
-  function τc(uu, gg, G, GG, Cᵢ1::Int64, Cᵢ2::Int64, ν,dt)
+#Stabilization paramameter continuity
+"""
+Stabilization parameter for contitnuity equation for the VMS.
+"""
+function τc(uu, gg, G, GG, Cᵢ1::Int64, Cᵢ2::Int64, ν,dt)
     return 1 / (τm(uu, G, GG,  Cᵢ1, Cᵢ2, ν,dt) ⋅ gg)
-  end
+end
 
-
+"""
+VMS non linear variational forumulation. It calles the [`conservations_equations`](@ref) and [`derivative_conservations_equations`](@ref).
+It provides the equations set, the jacobian and the time jacobian.
+"""
 function VMS(G, GG, gg, params::Dict{Symbol,Any})
   @unpack ν, dt, dΩ, hf, D, Cᵢ, θ = params
 
@@ -177,8 +191,8 @@ end #end VMS
 
 
 """
-
-VMS linearized
+VMS linear variational forumulation. It calles the [`conservations_equations`](@ref) and [`derivative_conservations_equations`](@ref). 
+The terms are divided between mass matrix, stifness matrix and right hand side.
 """
 function VMS_lin(G, GG, gg, params::Dict{Symbol,Any})
   @unpack ν, dt, dΩ, hf, linear, ũ, Cᵢ, θ = params

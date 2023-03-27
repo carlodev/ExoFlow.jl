@@ -1,6 +1,8 @@
 #For periodic case look for ghost nodes, that's the isempty function; The y direction is not periodic for the channel; look for genralization?
 
+"""
 
+"""
 function find_idx(p::VectorValue{2, Float64}, params; atol=1e-6)
   vv1 = findall(x->isapprox(x, p[1];  atol=atol), params[:restart_df].Points_0) 
   vv2 = findall(x->isapprox(x, p[2];  atol=atol), params[:restart_df].Points_1)
@@ -56,18 +58,6 @@ function uh(p::VectorValue{3, Float64}, params::Dict{Symbol, Any}, idx::Int)
 end
 
 
-"""
-function find_point(p, params::Dict{Symbol, Any})
-   
-
-    idx = find_idx(p, params)
-    println(idx)
-    ph = params[:restart_df].ph[idx][1]
-
-    return (uh(p, params, idx), ph)
-end
-"""
-
 function uh_restart(p, params::Dict{Symbol, Any})
   
   idx = find_idx(p, params)
@@ -86,8 +76,6 @@ function restart_uh_field(params::Dict{Symbol, Any})
   println("u0")
   u0(x, t::Real) = uh_restart(x, params)
   u0(t::Real) = x -> u0(x, t::Real)
- 
-
   return u0
 
 end
@@ -96,8 +84,6 @@ function restart_ph_field(params::Dict{Symbol, Any})
   println("p0")
   
   p0(x, t::Real) =  ph_restart(x, params)
-
-  
   p0(t::Real) = x -> p0(x, t::Real)
 
   return p0

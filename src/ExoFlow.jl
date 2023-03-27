@@ -85,41 +85,52 @@ include(joinpath("TaylorGreen","TaylorGreen.jl"))
 export analytical_solution
 
 
-
+#Common Procedure
 export hf_gen!
 export add_centre_tag!
 export printmodel
 export creation_fe_spaces
 export creation_op
 export creation_initial_conditions
+export create_system_solver
+export creation_ode_parameters
 export creation_ode_solver
+export compute_solution_
 export compute_solution
 export iterate_solution
+export compute_solution_benchmark
 export solve_case
 
-export petsc_options
 export initialize_parameters
+
+export petsc_options
 export set_reynolds_stress
 
 #Conservation
 export conservations_equations
 export derivative_conservations_equations
 
+#Linearization
 export create_ũ_vector
 export update_ũ
 export update_ũ_vector!
 export update_linear!
 
-export 
-export 
-export 
-export 
-export 
-export 
-export 
-export 
-export 
-export 
+#SUPG
+export h_param
+export τ
+export τb
+export SUPG
+export SUPG_lin
+
+#VMS
+export G_params
+export τm
+export τc
+export VMS
+export VMS_lin
+
+#Restart
 export 
 export 
 export 

@@ -1,14 +1,17 @@
-"Add the body force. The user in the initial parameters specify the component in the x direction. Then the body force function is created 2D or 3D accordingly to the physics of the case."
-function hf_gen!(params)
+"""
+Add the body force. The user in the initial parameters specify the component in the x direction. Then the body force function is created 2D or 3D accordingly to the physics of the case.
+"""
+function hf_gen!(params::Dict{Symbol,Any})
     hf(x, t::Union{Real,AbstractVector}) = (params[:D] == 2) ? VectorValue(params[:body_force], 0.0) : VectorValue(params[:body_force], 0.0, 0.0)
     hf(t::Union{Real,AbstractVector}) = x -> hf(x, t)
     merge!(params, Dict(:hf => hf))
     return params
 end
 
-
-"It prints the mesh of the model"
-function printmodel(params, model)
+"""
+It prints the mesh of the model
+"""
+function printmodel(params::Dict{Symbol,Any}, model)
     if params[:printmodel]
         @info "printing model"
         writevtk(model, "$(params[:case])_$(params[:D])d")
@@ -17,7 +20,9 @@ end
 
 
 
-"It creates the finite elements spaces accordingly to the previously generated dirichelet tags"
+"""
+It creates the finite elements spaces accordingly to the previously generated dirichelet tags
+"""
 function creation_fe_spaces(params::Dict{Symbol,Any}, u_diri_tags, u_diri_values, p_diri_tags, p_diri_values)
     reffeᵤ = ReferenceFE(lagrangian, VectorValue{params[:D],Float64}, params[:order])
     reffeₚ = ReferenceFE(lagrangian, Float64, params[:order])
@@ -36,7 +41,9 @@ function creation_fe_spaces(params::Dict{Symbol,Any}, u_diri_tags, u_diri_values
 end
 
 
-"It creates the problem, here are implemented the VMS or SUPG system of equations"
+"""
+It creates the problem, here are implemented the VMS or SUPG system of equations
+"""
 function creation_op(params)
     if params[:method] == :VMS
         G, GG, gg = G_params(params[:Ω], params)
@@ -69,7 +76,9 @@ end
 
 
 
-"It creates the initial conditions. The default initial value for the pressure is 0.0 Pa. If the restart parameter is set to true, the initial conditons are set accordingly to the provided file"
+"""
+It creates the initial conditions. The default initial value for the pressure is 0.0 Pa. If the restart parameter is set to true, the initial conditons are set accordingly to the provided file
+"""
 function creation_initial_conditions(params::Dict{Symbol,Any})
     U0 = params[:U](0.0)
     P0 = params[:P](0.0)
@@ -120,6 +129,10 @@ function creation_initial_conditions(params::Dict{Symbol,Any})
     end
 end
 
+"""
+It creates parameters that are used for the ODE solution. 
+In specific, if different ``\\theta`` are specified for velocity and pressure, are created vectors which relate each degree of freedom to the desired ``\\theta`` .
+"""
 function creation_ode_parameters(params::Dict{Symbol,Any})
     U0 = params[:U](0.0)
     P0 = params[:P](0.0)
@@ -157,7 +170,9 @@ function creation_ode_parameters(params::Dict{Symbol,Any})
 end
 
 
-"It creates the ODE solver using the parameters defined by the user"
+"""
+It creates the ODE solver using the parameters defined by the user
+"""
 function creation_ode_solver(params::Dict{Symbol,Any}) #In AlphaMethod case the xh0 is a tuple, first element is the initial condition, the second is the initial condition on the derivative
     θ_params = creation_ode_parameters(params)
     merge!(params, Dict(:θ_params => θ_params))
@@ -174,7 +189,9 @@ function creation_ode_solver(params::Dict{Symbol,Any}) #In AlphaMethod case the 
     return sol_t, ode_solver
 end
 
-"It computes the solution, different for benchmark case or for getting the results."
+"""
+It computes the solution, different for benchmark case or for getting the results.
+"""
 function compute_solution_(params::Dict{Symbol,Any})
     if params[:benchmark_mode]
         compute_solution_benchmark(params)
@@ -183,7 +200,9 @@ function compute_solution_(params::Dict{Symbol,Any})
     end
 end
 
-"It computes the solution, in the serial or parallel case"
+"""
+It computes the solution, in the serial or parallel case.
+"""
 function compute_solution(params::Dict{Symbol,Any})
     @unpack backend = params
     simulation_filename = "$(params[:case])_$(params[:D])d"
@@ -193,7 +212,9 @@ function compute_solution(params::Dict{Symbol,Any})
         end #end do
 end
 
-"It iterates the solution, here is where the solution is actually computed. At the end of each step the forces values are extracted if required"
+"""
+It iterates the solution, here is where the solution is actually computed. At the end of each step the forces values are extracted if required
+"""
 function iterate_solution(params::Dict{Symbol,Any}, pvd)
 
     iter = 0
@@ -217,7 +238,9 @@ function iterate_solution(params::Dict{Symbol,Any}, pvd)
 end
 
 
-#For benchmarking. It removes the compilation time for the first iteration and it does not print any results.
+"""
+For benchmarking. It removes the compilation time for the first iteration and it does not print any results.
+"""
 function compute_solution_benchmark(params::Dict{Symbol,Any})
     @unpack tF, dt, sol_t, force_params, Ω, case = params
     @time (xh_tn, tn), state = Base.iterate(sol_t)
@@ -233,7 +256,9 @@ function compute_solution_benchmark(params::Dict{Symbol,Any})
 end
 
 
-"It creates the system solver which can be linear/non linear, julia/petsc using GAMG (only in petsc) or not"
+"""
+It creates the system solver which can be linear/non linear, julia/petsc using GAMG (only in petsc) or not.
+"""
 function create_system_solver(params::Dict{Symbol,Any})
     @unpack U, P = params
     sys_solver = :none
@@ -280,7 +305,9 @@ function create_system_solver(params::Dict{Symbol,Any})
     return sys_solver
 end
 
-"Wrapper function that solve the case. Here the Non Linear Solver - nls is defined, in case the default julia sovler is adopted or PETSc"
+"""
+Wrapper function that solve the case. Here the Non Linear Solver - nls is defined, in case the default julia sovler is adopted or PETSc
+"""
 function solve_case(params::Dict{Symbol,Any})
 
 
