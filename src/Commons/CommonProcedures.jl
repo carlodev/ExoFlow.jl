@@ -19,6 +19,21 @@ function printmodel(params::Dict{Symbol,Any}, model)
 end
 
 
+"""
+It decides to print or not the last simulation result.
+"""
+function printlast(params::Dict{Symbol,Any}, tn::Float64)
+    @unpack tF, dt, print_last = params
+    if print_last
+        if tn > tF - dt
+            return true
+        else
+            return false
+        end
+    else
+        return true
+    end
+end
 
 """
 It creates the finite elements spaces accordingly to the previously generated dirichelet tags
@@ -206,10 +221,10 @@ It computes the solution, in the serial or parallel case.
 function compute_solution(params::Dict{Symbol,Any})
     @unpack backend = params
     simulation_filename = "$(params[:case])_$(params[:D])d"
-    
-        createpvd(params[:parts], simulation_filename) do pvd
-            iterate_solution(params, pvd)
-        end #end do
+
+    createpvd(params[:parts], simulation_filename) do pvd
+        iterate_solution(params, pvd)
+    end #end do
 end
 
 """
@@ -225,7 +240,7 @@ function iterate_solution(params::Dict{Symbol,Any}, pvd)
         ph_tn = xh_tn[2]
         ωh_tn = ∇ × uh_tn
 
-        if !params[:benchmark_mode]
+        if printlast(params, tn)
             pvd[tn] = createvtk(params[:Ω], joinpath("Results", "$(params[:case])_$(params[:D])d_$tn" * ".vtu"), cellfields=["uh" => uh_tn, "ph" => ph_tn, "wh" => ωh_tn])
         end
 

@@ -37,7 +37,8 @@ Print Settings
 - `:printmodel` can be `true` or `false`. If `true` mesh is saved as a .pvtu file.
 - `:printinitial` can be `true` or `false`. If `true` saves the flowfield at `t0`. It is useful when restarting from a previous solution.
 - `:benchmark_mode` => can be `true` or `false`. If `true` it does not print the solution, and it gives the time needed for computing the iteration form the 2nd till the end. The first iteration is not taken into account for computing the time because of precompilation.
-
+- `:print_last` can be `true`or `false`. If true the solution is printed only for the last time step, if false, solution files are created for each time step. It is useful when you want to check the final state (`LidDriven` or `TaylorGreen`).
+ 
 Mesh Settings
 - `:mesh_gen` can be `true` or `false`. It has to be set `true` for cases where the mesh is read from a `.msh` file.
 - `:mesh_file` is a string with the name of the `.msh` that can be read. By default it points to the folder `/models` of the package.
@@ -100,7 +101,7 @@ function instantiate_parameters()
     :debug_mode => false,
     :benchmark_mode => false,
     :printinitial => false,
-
+    :print_last =>false,
     :mesh_file => "DU89_i_2D.msh",
     :Cᵢ => [4, 36],    
     :options => petsc_options(:ksplu),

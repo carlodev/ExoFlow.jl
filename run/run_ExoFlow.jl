@@ -9,7 +9,7 @@ include("Turbulence_Settings.jl")
 #lid driven u_in = 0
 
 
-backend = MPIBackend() #or MPIBackend() SequentialBackend()
+backend = SequentialBackend() #or MPIBackend() SequentialBackend()
 function instantiate_parameters()
     parameters = Dict(
     :N => 100,
@@ -18,7 +18,7 @@ function instantiate_parameters()
     
     :t0 => 0.0,
     :dt => 0.01,
-    :tF => 1.0,
+    :tF => 0.1,
     :t_endramp => 0.0,
 
     :case => "LidDriven",
@@ -42,6 +42,8 @@ function instantiate_parameters()
     :debug_mode => false,
     :benchmark_mode => false,
     :printinitial => false,
+    :print_last =>true, 
+  
     :mesh_file => "DU89_i_2D.msh",
     :Cᵢ => [4, 36],    
     :options => petsc_options(:ksplu),
