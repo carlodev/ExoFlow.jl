@@ -57,6 +57,14 @@ solve_case
 initialize_parameters
 ```
 
+## Restart
+```@docs
+find_idx
+uh_restart
+ph_restart
+restart_uh_field
+restart_ph_field
+```
 
 ## Forces
 ```@docs
