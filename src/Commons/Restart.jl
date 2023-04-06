@@ -30,6 +30,8 @@ For a given point `p` it search on the `restart_file` provided by the user the c
 It takes into account also the channel periodic case, changing the coordiantes of the periodic directions. 
 """
 function find_idx(p::VectorValue{3, Float64}, params; atol = 1e-4)
+  if hasproperty(params[:restart_df], :Points_2)
+
   vv1 = findall(x->isapprox(x, p[1];  atol=atol), params[:restart_df].Points_0) 
   vv2 = findall(x->isapprox(x, p[2];  atol=atol), params[:restart_df].Points_1)
   vv3 = findall(x->isapprox(x, p[3];  atol=atol), params[:restart_df].Points_2)
@@ -52,8 +54,12 @@ function find_idx(p::VectorValue{3, Float64}, params; atol = 1e-4)
   if isempty(idx)
     idx = find_idx(p, params; atol = atol*10)
   end
-  
   return idx[1]
+  
+  else
+    return find_idx(VectorValue(p[1], p[2]), params; atol = atol) 
+  end
+
 end
 
 function uh(p::VectorValue{2, Float64}, params::Dict{Symbol, Any}, idx::Int)
@@ -63,7 +69,12 @@ end
 
 
 function uh(p::VectorValue{3, Float64}, params::Dict{Symbol, Any}, idx::Int)
-  VectorValue(params[:restart_df].uh_0[idx][1], params[:restart_df].uh_1[idx][1], params[:restart_df].uh_2[idx][1])
+  if hasproperty(params[:restart_df], :Points_2)
+    VectorValue(params[:restart_df].uh_0[idx][1], params[:restart_df].uh_1[idx][1], params[:restart_df].uh_2[idx][1])
+  else
+    VectorValue(params[:restart_df].uh_0[idx][1], params[:restart_df].uh_1[idx][1], 0.0)
+
+  end
 end
 
 """
