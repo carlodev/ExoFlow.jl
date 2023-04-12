@@ -361,6 +361,4 @@ function solve_case(params::Dict{Symbol,Any})
     pprof()
     """
     @time compute_solution_(params)
-
-    #@time compute_solution(params)
 end
