@@ -23,8 +23,9 @@ function conservations_equations(params::Dict{Symbol,Any})
 
     #Linearized momentum equation
     # Momentum residual, without viscous term if first order elements
-    Rm_lin(u, p) = ũ ⋅ ∇(u) + ∇(p) #- ν*Δ(u)        
-
+    skew_lin(u) = ũ *(∇⋅u)/2
+    Rm_lin(u, p) = ũ ⋅ ∇(u) + ∇(p) + skew_lin(u)#- ν*Δ(u)       
+    
     # Momentum residual, without viscous term if first order elements
     # Rm_steady(u, p) = u ⋅ ∇(u) + ∇(p) - hf - ν*Δ(u)
 
