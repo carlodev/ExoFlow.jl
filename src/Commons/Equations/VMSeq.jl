@@ -213,8 +213,8 @@ function VMS_lin(G, GG, gg, params::Dict{Symbol,Any})
   m(t, (u, p), (v, q)) =  ∫(u ⋅ v)dΩ + 
   ∫((ũ ⋅ ∇(v) + (θvp)*∇(q)) ⊙ bTRm(u, p))dΩ + 
   ∫((ũ ⋅ (∇(v))') ⊙ bTRm(u, p))dΩ +
-   -1 * ∫((∇(v)) ⊙ (outer(bTRm(u, p), bbTRm(u, p))))dΩ +
-   -1 * ∫((∇(v)) ⊙ (outer(bbTRm(u, p), bTRm(u, p))))dΩ
+   -0.5 * ∫((∇(v)) ⊙ (outer(bTRm(u, p), bbTRm(u, p))))dΩ +
+   -0.5 * ∫((∇(v)) ⊙ (outer(bbTRm(u, p), bTRm(u, p))))dΩ
   
   
   aᴳ(t, (u, p), (v, q)) = ∫((ũ ⋅ ∇(u)) ⋅ v)dΩ - ∫((∇ ⋅ v) * p)dΩ + ∫((q * (∇ ⋅ u)))dΩ + ν * ∫(∇(v) ⊙ ∇(u))dΩ 
@@ -224,7 +224,7 @@ function VMS_lin(G, GG, gg, params::Dict{Symbol,Any})
   a_VMS2(t, (u, p), (v, q)) = -0.5 * ∫((∇(v)) ⊙ (outer(aTRm(u, p), bbTRm(u, p))))dΩ -0.5* ∫((∇(v)) ⊙ (outer(bbTRm(u, p), aTRm(u, p))))dΩ
   
   a(t, (u, p), (v, q)) = aᴳ(t, (u, p), (v, q)) +  a_SUPG(t, (u, p), (v, q)) + a_VMS1(t,(u, p), (v, q)) + a_VMS2(t,(u, p), (v, q))
-  b(t, (v, q)) =∫(hf(t) ⋅ v)dΩ
+  b(t, (v, q)) =∫(hf(t) ⋅ v)dΩ + ∫((ũ ⋅ ∇(v) + ∇(q)) ⋅  fTRm(t))dΩ + ∫((ũ ⋅ (∇(v))') ⋅ fTRm(t))dΩ
 
   return m,a,b
 end
