@@ -4,24 +4,23 @@ include("Turbulence_Settings.jl")
 
 
 
-
 #channel body force = 0.00337204, ν=0.0001472, u_in =1.0
 #lid driven u_in = 0
 
 
-backend = SequentialBackend() #or MPIBackend() SequentialBackend()
+backend = MPIBackend() #or MPIBackend() SequentialBackend()
 function instantiate_parameters()
     parameters = Dict(
-    :N => 100,
+    :N => 10,
     :D => 2, #Dimension
     :order => 1,
     
     :t0 => 0.0,
-    :dt => 0.01,
-    :tF => 0.1,
+    :dt => 0.0015,
+    :tF => 10.0,
     :t_endramp => 0.0,
 
-    :case => "LidDriven",
+    :case => "Plate",
     :solver => :petsc,
     :method => :VMS,
     :ode_method => :ThetaMethod,
@@ -30,9 +29,9 @@ function instantiate_parameters()
     :Re => 1_000,
     :c => 1, #chord lenght [m], used for naca (=1), cylinder (=0.1), liddriven = (1), 0.5
     :u_in => 1.0,  # =1.0 for lid driven 
-    :periodic => false,
+    :periodic => true,
 
-    :printmodel => false,
+    :printmodel => true,
     
     :mesh_gen => false,
 
@@ -41,10 +40,10 @@ function instantiate_parameters()
 
     :debug_mode => false,
     :benchmark_mode => false,
-    :printinitial => false,
-    :print_last =>true, 
+    :printinitial => true,
+    :print_last =>false, 
   
-    :mesh_file => "DU89_i_2D.msh",
+    :mesh_file => "sd7003s_3D.msh",
     :Cᵢ => [4, 36],    
     :options => petsc_options(:ksplu),
 
@@ -53,7 +52,7 @@ function instantiate_parameters()
 
     :ν => 1.0e-5,  #channel = 0.0001472, 
     :ρ => 1.0, #kg/m3 density
-    :body_force => 0.0, #channel = 0.00337204
+    :body_force =>0.0, #channel = 0.00337204
     
     :np_x => 2, #number of processors in X
     :np_y => 2, #number of processors in Y
@@ -61,7 +60,7 @@ function instantiate_parameters()
 
     :start_condition => :turbulent,
     :restart => false,
-    :restart_file => "DU89_0p85.csv",
+    :restart_file => "src/Airfoil/Sd1.csv",
     :TI =>0.01,
     :Vbox => turbulence_box(),
     :Re_filename => "none"
@@ -76,3 +75,5 @@ params = instantiate_parameters()
 
 
 ExoFlow.main((params, backend))
+
+#mpiexecjl --project=../ -n 4 julia -O3 --check-bounds=no -L run_ExoFlow.jl

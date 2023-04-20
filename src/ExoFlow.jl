@@ -29,7 +29,7 @@ using PartitionedArrays
 using SparseArrays
 using SparseMatricesCSR
 
-# using DifferentialEquations
+using DifferentialEquations
 using JLD2
 using MPI
 using Random
@@ -38,7 +38,7 @@ using DataFrames
 using FileIO
 # using BenchmarkTools
 using Parameters
-# using Profile
+using Profile
 #using PProf
 #using Revise
 using Dates
@@ -143,9 +143,5 @@ export restart_ph_field
 export forces_domain
 export compute_forces
 export write_forces
-export 
-export 
-export 
-export 
 
 end # module
