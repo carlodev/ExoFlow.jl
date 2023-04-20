@@ -14,7 +14,7 @@ It updates the vector which stores the values of velocity at previous time steps
 """
 function  update_ũ_vector!(ũ_vec::Vector{Vector{Float64}}, uhfields::MPIData)
     uh_new = get_free_dof_values(get_part(uhfields))
-    circshift!(ũ_vec,-1)
+    circshift!(ũ_vec,1)
     ũ_vec[1] = deepcopy(uh_new)
 end
 
@@ -50,7 +50,7 @@ end
 function update_ũ_vector!(ũ_vec::Vector{Vector}, zfields::SequentialData)
 for p = 1:1:length(zfields.parts)
       zfv = get_free_dof_values(get_part(zfields,p))
-      circshift!(ũ_vec[p],-1)
+      circshift!(ũ_vec[p],1)
       ũ_vec[p][1] = deepcopy(zfv)
     end
 end
@@ -87,3 +87,37 @@ function update_linear!(params::Dict{Symbol,Any}, uh_tn)
     update_free_values!(params[:ũ].fields, zt)
   end
 end
+
+
+#REPL
+using Gridap.FESpaces
+"""
+  create_ũ_vector(zfields::SingleFieldFEFunction)
+"""
+function create_ũ_vector(zfields::SingleFieldFEFunction)
+    u_vec = Vector[]
+    zfv = get_free_dof_values(zfields)
+    u_vec =  [zfv, zfv, zfv, zfv]
+  return u_vec  
+end
+
+function update_ũ_vector!(ũ_vec::Vector{Vector{Float64}}, zfields::SingleFieldFEFunction)
+      zfv = get_free_dof_values(zfields)
+      circshift!(ũ_vec,1)
+      ũ_vec[1] = deepcopy(zfv)
+end
+  
+
+
+function update_free_values!(zfields::SingleFieldFEFunction, zt::Vector{Float64})
+  copyto!(zfields.free_values, zt)
+end
+
+function update_linear!(params::Dict{Symbol,Any}, uh_tn::SingleFieldFEFunction)
+  if params[:linear]
+    update_ũ_vector!(params[:ũ_vector], uh_tn)
+    zt = update_ũ(params[:ũ_vector], params[:ũ_coeff])
+    update_free_values!(params[:ũ], zt)
+  end
+end
+
