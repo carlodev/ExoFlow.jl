@@ -33,7 +33,8 @@ function bc_airfoil(params)
     u_diri_values = [u_free, u_free, u_wall, u_SEM]
     """
     u_diri_tags=["inlet", "limits", "airfoil"]
-    u_diri_values = [u_SEM, u_free, u_wall]
+    #u_diri_values = [u_SEM, u_free, u_wall]
+    u_diri_values = [u_free, u_free, u_wall]
     p_diri_tags=["outlet"]
     p_diri_values = [0.0]
     force_tags = ["airfoil"]

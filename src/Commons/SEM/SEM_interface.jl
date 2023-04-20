@@ -41,7 +41,7 @@ function generation_u_fluct!(x::VectorValue, t::Real, sem_cache::SEMcache)
     Re_point = SyntheticEddyMethod.Reynolds_stress_points(vec_point, sem_cache.Re)
     
     #compute fluctuation. U₀ = 0.0, added in the boundary condtions
-    @time U = compute_uDFSEM(vec_point, sem_cache.Eddies, sem_cache.Vboxinfo, Re_point)[1]
+    U = compute_uDFSEM(vec_point, sem_cache.Eddies, sem_cache.Vboxinfo, Re_point)[1]
         
     if D == 3
         return VectorValue(U...)
