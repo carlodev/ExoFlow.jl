@@ -52,7 +52,7 @@ Parameters = "0.12.3"
 Revise = "3.5.1"
 SparseMatricesCSR = "0.6.7"
 SyntheticEddyMethod = "0.4.0"
-XLSX = "0.8.4"
+XLSX = "0.8.4, 0.9"
 julia = "1.8.2"
 
 [extras]
