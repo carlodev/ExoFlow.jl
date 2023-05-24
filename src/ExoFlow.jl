@@ -29,7 +29,6 @@ using PartitionedArrays
 using SparseArrays
 using SparseMatricesCSR
 
-using DifferentialEquations
 using JLD2
 using MPI
 using Random
@@ -77,8 +76,7 @@ include(joinpath("Channel","Channel.jl"))
 include(joinpath("LidDriven","LidDriven.jl"))
 include(joinpath("Cylinder","Cylinder.jl"))
 include(joinpath("Airfoil","Airfoil.jl"))
-include(joinpath("Plate","Plate.jl"))
-include(joinpath("Plate","Blasius.jl"))
+
 include(joinpath("TaylorGreen","TaylorGreen.jl"))
 
 
@@ -143,5 +141,10 @@ export restart_ph_field
 export forces_domain
 export compute_forces
 export write_forces
+
+#SEM
+export SEMcache
+export generation_u_fluct!
+
 
 end # module
