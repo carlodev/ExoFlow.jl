@@ -5,7 +5,7 @@ function run_airfoil(params)
     mesh_file_path = joinpath(@__DIR__, "../../models", params[:mesh_file])
     
     model = GmshDiscreteModel(params[:parts], mesh_file_path)
-    #add_SEM_tag!(model)
+    add_SEM_tag!(model)
     printmodel(params, model)
     
 
