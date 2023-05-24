@@ -26,7 +26,7 @@ function petsc_options(prec::Symbol)
         
     
     elseif prec == :ksplu
-        options = "-pc_type asm -sub_pc_type lu -ksp_type gmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true"
+        options = "-pc_type asm -sub_pc_type lu -ksp_type gmres -ksp_gmres_restart 30 -ksp_rtol 1e-5 -ksp_atol 1e-5 -ksp_converged_reason -ksp_error_if_not_converged true"
     
     else
         error("petsc_options $prec not recognized as valid")
