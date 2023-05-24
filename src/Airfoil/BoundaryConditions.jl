@@ -15,9 +15,19 @@ function bc_airfoil(params)
     u_free(t::Real) = x -> u_free(x,t)
 
     #No generation of Eddies during ramping
-    uin0(t) = (t < t_endramp) ? 0.0 : 1
-    
-    u_SEM(x,t) = (TI == 0.0) ? u_free(x,t) : u_free(x,t) .+ uin0(t) .* generation_u_fluct!(x,t, params[:sem_cache])
+     
+    function val(x::Gridap.Fields.ForwardDiff.Dual)
+        x.value
+    end
+    val(x::Float64) = x
+    val(x::Int64) = Float64(x)
+
+    uin0(t) = (t < t_endramp) ? 0.0 : 1.0
+        
+    corr_factor = 1.0 #0.995
+
+    # u_SEM(x,t) = (TI == 0.0) ? u_free(x,t) : corr_factor .* (u_free(x,t) .+ uin0(t) .* generation_u_fluct!(x,t, params[:sem_cache]))
+    u_SEM(x,t::Real) = (TI == 0.0) ? u_free(x,t) : corr_factor .* (u_free(x,t) .+ uin0(val(t)) .* generation_u_fluct!(x,t, params[:sem_cache]))
 
     u_SEM(t::Real) = x -> u_SEM(x,t)
     
@@ -34,7 +44,7 @@ function bc_airfoil(params)
     """
     u_diri_tags=["inlet", "limits", "airfoil"]
     #u_diri_values = [u_SEM, u_free, u_wall]
-    u_diri_values = [u_free, u_free, u_wall]
+    u_diri_values = [u_SEM, u_free, u_wall]
     p_diri_tags=["outlet"]
     p_diri_values = [0.0]
     force_tags = ["airfoil"]
