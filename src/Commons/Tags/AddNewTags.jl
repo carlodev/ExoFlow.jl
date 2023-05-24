@@ -78,7 +78,9 @@ function add_SEM_tag!(model; c=1.0, a_tol = 1e-1)
         for centre_point in cell_node
             labels.d_to_dface_to_entity[1][centre_point] = new_entity
         end
-        add_tag!(labels, "sem", [new_entity])
+        if ! ("sem" in labels.tag_to_name)
+            add_tag!(labels, "sem", [new_entity])
+        end
     end
 
 
