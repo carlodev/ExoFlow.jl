@@ -14,7 +14,7 @@ It updates the vector which stores the values of velocity at previous time steps
 """
 function  update_ũ_vector!(ũ_vec::Vector{Vector{Float64}}, uhfields::MPIData)
     uh_new = get_free_dof_values(get_part(uhfields))
-    circshift!(ũ_vec,-1)
+    circshift!(ũ_vec,1)
     ũ_vec[1] = deepcopy(uh_new)
 end
 
@@ -50,7 +50,7 @@ end
 function update_ũ_vector!(ũ_vec::Vector{Vector}, zfields::SequentialData)
 for p = 1:1:length(zfields.parts)
       zfv = get_free_dof_values(get_part(zfields,p))
-      circshift!(ũ_vec[p],-1)
+      circshift!(ũ_vec[p],1)
       ũ_vec[p][1] = deepcopy(zfv)
     end
 end

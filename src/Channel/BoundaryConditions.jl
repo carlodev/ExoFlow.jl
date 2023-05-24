@@ -2,32 +2,24 @@ include("DNS_start.jl")
 
 function initial_velocity(params)
     @unpack D, start_condition, sem_cache = params
+ 
     
-    if start_condition == :laminar
-    #Perturbation of the initial conditions per periodic case, looking for turbulent profile
-        umax = 1 ./ (2 .* params[:ν]) .* params[:body_force]
-        ux_p(x) = umax .* (1 .- x[2] .^ 2) #Because h=1, simplified expression
-    
-    else start_condition == :turbulent
-        ux_p = dns_velocity()
-        u0_turb(x, t::Real) = ux_p(x) + generation_u_fluct!(x, t, sem_cache)
-    end
-    
-    
-    # ux_noise(x) = (rand(1)[1] .- 0.5) .* 0.3 .* ux_p(x) #Or just .* 2/3.* umax #more turbulent/chaotic
-    # uy_noise(x) = (rand(1)[1] .- 0.5) .* 0.1 #are function of x, in this way at each point there is a different value, otherwise it is computed just once
-    # uz_noise(x) = (rand(1)[1] .- 0.5) .* 0.1
+    umax = 1 ./ (2 .* params[:ν]) .* params[:body_force]
+    ux_Poiseuille(x) = umax .* (1 .- x[2] .^ 2)
+    ux_laminar(x) = (params[:D]== 2) ? VectorValue(ux_Poiseuille(x), 0.0) : VectorValue(ux_Poiseuille(x), 0.0, 0.0) #Because h=1, simplified expression
 
-    # ux(x) = ux_p(x) .+ ux_noise(x)
-    # uy(x) = uy_noise(x)
-    # uz(x) = uz_noise(x)
+    u_turbulent = dns_velocity()
 
+    u_profile(x) = (start_condition == :laminar) ? ux_laminar(x)  : u_turbulent(x)
 
-    u0(x, t::Real) = params[:periodic] ? ((params[:D]== 2) ? VectorValue(ux(x), uy(x)) : VectorValue(ux(x), uy(x), uz(x))) : ((params[:D] == 2) ? VectorValue(params[:u_in], 0.0) : VectorValue(params[:u_in], 0.0, 0.0))
-    
+    ux_noise(x) = (rand(1)[1] .- 0.5) .* 0.3 .* u_profile(x)[1] #Or just .* 2/3.* umax #more turbulent/chaotic
+    uy_noise(x) = (rand(1)[1] .- 0.5) .* 0.1 .* u_profile(x)[1]#are function of x, in this way at each point there is a different value, otherwise it is computed just once
+    uz_noise(x) = (rand(1)[1] .- 0.5) .* 0.1 .* u_profile(x)[1]
+
+    u_noise(x, t::Real) = (params[:D]== 2) ? VectorValue(ux_noise(x), uy_noise(x)) : VectorValue(ux_noise(x), uy_noise(x), uz_noise(x))
+    u0_turb(x, t::Real) = u_profile(x) + u_noise(x,t) #generation_u_fluct!(x, t, sem_cache)
+
     u0(x, t::Real) = params[:periodic] ? u0_turb(x, t) : ((params[:D] == 2) ? VectorValue(params[:u_in], 0.0) : VectorValue(params[:u_in], 0.0, 0.0))
-
-
     u0(t::Real) = x -> u0(x, t::Real)
 
     return u0

@@ -20,7 +20,7 @@ function petsc_options(prec::Symbol)
         options = "-snes_type newtonls -snes_linesearch_type basic  -snes_linesearch_damping 1.0 -snes_rtol 1.0e-14 -snes_atol 0.0 -snes_monitor -pc_type asm -sub_pc_type lu  -ksp_type gmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true "
     
     elseif prec == :kspgamg
-        options =  "-log_view -ksp_type fgmres -pc_fieldsplit_type symmetric_multiplicative -ksp_converged_reason -ksp_max_it 50 -ksp_rtol 1e-3 -ksp_atol 1e-5 \
+        options =  "-log_view -ksp_type fgmres -pc_fieldsplit_type symmetric_multiplicative -ksp_converged_reason -ksp_max_it 50 \
          -fieldsplit_vel_pc_type gamg -fieldsplit_vel_ksp_type gmres -fieldsplit_vel_ksp_converged_reason \
          -fieldsplit_pres_pc_type gamg -fieldsplit_pres_pc_gamg_aggressive_coarsening 0.08 -fieldsplit_pres_pc_gamg_agg_nsmooths 10 -fieldsplit_pres_ksp_type gmres -fieldsplit_pres_ksp_converged_reason"
         
@@ -34,7 +34,7 @@ function petsc_options(prec::Symbol)
     
     return options * " -log_view" * " -ksp_monitor_short"
 end
-
+#-ksp_rtol 1e-3 -ksp_atol 1e-5 
 
 function mykspsetup(ksp)
     pc = Ref{GridapPETSc.PETSC.PC}()

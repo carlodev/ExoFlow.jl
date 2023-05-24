@@ -63,11 +63,11 @@ function run_taylorgreen(params)
   @info "sol_t created"
   merge!(params, Dict(:sol_t => sol_t, :ode_solver => ode_solver))
 
-  if params[:benchmark_mode]
-    compute_solution_benchmark(params)
+  # if params[:benchmark_mode]
+  #   compute_solution_benchmark(params)
   
-  else
-    #This is a "special case", the only one with analytical solutions
+  # else
+    # This is a "special case", the only one with analytical solutions
     e_u = 10
     e_p = 10
     iter = 0
@@ -84,20 +84,20 @@ function run_taylorgreen(params)
         u_analytic = velocity(tn)
         w_analytic = ωa(tn)
   
-        # if isapprox(tn, params[:tF]; atol=0.2 * params[:dt])
-        #   e_u
-        #   e_p
-        #   eu = velocity(params[:tF]) - uh_tn
-        #   ep = pa(params[:tF]) - ph_tn
-        #   e_u = sqrt(sum(∫(eu ⋅ eu) * params[:dΩ]))
-        #   e_p = sqrt(sum(∫(ep * ep) * params[:dΩ]))
-  
-        # end #end if
+        if isapprox(tn, params[:tF]; atol=0.2 * params[:dt])
+          eu = velocity(params[:tF]) - uh_tn
+          ep = pa(params[:tF]) - ph_tn
+          e_u = sqrt(sum(∫(eu ⋅ eu) * params[:dΩ]))
+          e_p = sqrt(sum(∫(ep * ep) * params[:dΩ]))
+          println("eu = $(e_u)")
+          println("ep = $(e_p)")
+
+        end #end if
         iter = iter + 1 
         println("iter = $iter")
-        
-        pvd[tn] = createvtk(params[:Ω], "Results/$(params[:case])_$tn" * ".vtu", cellfields=["uh" => uh_tn, "ph" => ph_tn, "wh" => ωh_tn, "p_analytic"=>p_analytic, "u_analytic"=>u_analytic,  "u0"=>params[:ũ]])
-        
+        if !params[:benchmark_mode]
+          pvd[tn] = createvtk(params[:Ω], "Results/$(params[:case])_$tn" * ".vtu", cellfields=["uh" => uh_tn, "ph" => ph_tn, "wh" => ωh_tn, "p_analytic"=>p_analytic, "u_analytic"=>u_analytic])
+        end
         
         update_linear!(params, uh_tn)
 
@@ -106,7 +106,7 @@ function run_taylorgreen(params)
       end #end for
   
     end #end do
-  end
+  #  end
   #   comm = MPI.COMM_WORLD
   
   #   if ((MPI.Comm_rank(comm)) == 0)

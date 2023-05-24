@@ -1,5 +1,5 @@
 #!/bin/bash
-# export PATH=$HOME/julia-1.8.2/bin/:$PATH
+export PATH=$HOME/julia-1.8.5/bin/:$PATH
 # This script is to be executed from this folder (compile/)
 # See https://juliaparallel.github.io/MPI.jl/latest/knownissues/#Julia-module-precompilation-1
 # for a justification of this line

@@ -2,8 +2,8 @@ using Pkg
 pwd()
 cd("..")
 Pkg.activate(".")
+using Revise
 using ExoFlow
-using SytheticEddyMethod
 using PartitionedArrays
 
 include("Turbulence_Settings.jl")
@@ -19,7 +19,7 @@ backend = MPIBackend() #or MPIBackend() SequentialBackend()
 function instantiate_parameters()
     parameters = Dict(
     :N => 20,
-    :D => 2, #Dimension
+    :D => 3, #Dimension
     :order => 1,
     
     :t0 => 0.0,
@@ -27,7 +27,7 @@ function instantiate_parameters()
     :tF => 15.0,
     :t_endramp => 5.0,
 
-    :case => "TaylorGreen",
+    :case => "Airfoil",
     :solver => :petsc,
     :method => :VMS,
     :ode_method => :ThetaMethod,
@@ -62,7 +62,7 @@ function instantiate_parameters()
     :ρ => 1.0, #kg/m3 density
     :body_force => 0.0, #channel = 0.00337204
     
-    :np_x => 2, #number of processors in X
+    :np_x => 20, #number of processors in X
     :np_y => 2, #number of processors in Y
     :np_z => 2, #number of processors in Z
 

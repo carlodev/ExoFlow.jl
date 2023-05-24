@@ -3,7 +3,7 @@ using Interpolations, XLSX, DataFrames
 function dns_velocity()
 uτ = 5.7455e-2
 ν = 1.4545e-4
-U_DNS = DataFrame(XLSX.readtable("../src/Channel/Benchmark/Ret_395/U.xlsx", "Sheet1"))
+U_DNS = DataFrame(XLSX.readtable("../../src/Channel/Benchmark/Ret_395/U.xlsx", "Sheet1"))
 
 y_physical = reverse(1 .- U_DNS.yp*ν/uτ)
 u_physical = reverse(U_DNS.Umean*uτ)
