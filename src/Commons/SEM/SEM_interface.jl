@@ -14,40 +14,34 @@ function generation_u_fluct!(x::VectorValue, t::Real, sem_cache::SEMcache)
         sem_cache.Eddies = initialize_eddies(sem_cache.Vboxinfo)
     end
     
-    
-    if t>sem_cache.t_old
-        #convecting eddies
-        @info "convecting eddies"
-        sem_cache.Eddies = map(ej -> convect_eddy(sem_cache.dt, ej, sem_cache.U₀, sem_cache.Vboxinfo), sem_cache.Eddies)
-        # comm = MPI.COMM_WORLD
-        # MPI.Barrier(comm)
-        #Update cache: time and Eddies
-        sem_cache.t_old = t
-    
-    elseif t<sem_cache.t_old
-        error("cannot compute eddies at a previous time step")
-    end
-    
-
     D = length(x)
 
     if D ==3
-        vec_point = [x[1], abs(x[2]), x[3]]
+        vec_point = [0.0, x[2], x[3]]
 
     elseif D == 2
-        vec_point = [x[1], abs(x[2]), 0.0]
+        vec_point = [0.0, x[2], 0.0]
 
     end
     Re_point = SyntheticEddyMethod.Reynolds_stress_points(vec_point, sem_cache.Re)
     
     #compute fluctuation. U₀ = 0.0, added in the boundary condtions
-    U = compute_uDFSEM(vec_point, sem_cache.Eddies, sem_cache.Vboxinfo, Re_point)[1]
+    # U = compute_uDFSEM(vec_point, sem_cache.Eddies, sem_cache.Vboxinfo, Re_point)[1] #compute_uDFSEM return Velocity, Eddies
+    
+    function val(x::Gridap.Fields.ForwardDiff.Dual)
+        x.value
+    end
+    val(x::Float64) = x
+    val(x::Int64) = Float64(x)
+    tt = val(t)
+    U = compute_fluct(vec_point, tt, sem_cache.Eddies, sem_cache.U₀, sem_cache.Vboxinfo, sem_cache.Re; DFSEM = true)    #compute_uDFSEM return Velocity, Eddies
+ 
         
     if D == 3
-        return VectorValue(U...)
+        return VectorValue(U[1] - sem_cache.U₀, U[2], U[3])
     
     elseif D== 2
-        return VectorValue(U[1], U[2])
+        return VectorValue(U[1] - sem_cache.U₀, U[2])
     
     end
 
