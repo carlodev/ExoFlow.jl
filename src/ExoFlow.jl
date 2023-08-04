@@ -67,6 +67,7 @@ include(joinpath("Commons","SEM","Turbulence_Utilities.jl"))
 
 
 include(joinpath("Commons","ComputeForces.jl"))
+include(joinpath("Commons","ExportUtilities.jl"))
 include(joinpath("Commons","CommonProcedures.jl"))
 include(joinpath("Commons","Errors_Warnings.jl"))
 include(joinpath("Commons","Init_params.jl"))
@@ -143,9 +144,10 @@ export restart_ph_field
 export forces_domain
 export compute_forces
 export write_forces
-export 
-export 
-export 
-export 
+# export write_surface_friction_pressure
+
+#Export
+export get_nodes
+export export_fields
 
 end # module

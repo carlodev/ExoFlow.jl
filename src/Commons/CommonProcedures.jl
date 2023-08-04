@@ -233,6 +233,10 @@ It iterates the solution, here is where the solution is actually computed. At th
 function iterate_solution(params::Dict{Symbol,Any}, pvd)
 
     iter = 0
+    print_step = Int64.(round(0.1 / params[:dt]))
+    local_unique_idx = get_nodes(params)
+    println("get_nodes")
+
     for (xh_tn, tn) in params[:sol_t]
         iter = iter + 1
         println("iteration = $iter")
@@ -240,12 +244,14 @@ function iterate_solution(params::Dict{Symbol,Any}, pvd)
         ph_tn = xh_tn[2]
         ωh_tn = ∇ × uh_tn
 
-        if printlast(params, tn)
-            pvd[tn] = createvtk(params[:Ω], joinpath("Results", "$(params[:case])_$(params[:D])d_$tn" * ".vtu"), cellfields=["uh" => uh_tn, "ph" => ph_tn, "wh" => ωh_tn])
-        end
 
-        write_forces(params, uh_tn, ph_tn, tn)
+         if mod(iter,print_step)<1 #printlast(params, tn) && 
+             pvd[tn] = createvtk(params[:Ω], joinpath("Results", "$(params[:case])_$(params[:D])d_$tn" * ".vtu"), cellfields=["uh" => uh_tn, "ph" => ph_tn, "wh" => ωh_tn])
+         end
 
+         export_fields(params, local_unique_idx, tn, uh_tn,ph_tn)
+         write_forces(params, uh_tn, ph_tn, tn)
+        # write_surface_friction_pressure(params, uh_tn, ph_tn, tn)
         update_linear!(params, uh_tn)
     end
 
