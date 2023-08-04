@@ -20,13 +20,13 @@ function petsc_options(prec::Symbol)
         options = "-snes_type newtonls -snes_linesearch_type basic  -snes_linesearch_damping 1.0 -snes_rtol 1.0e-14 -snes_atol 0.0 -snes_monitor -pc_type asm -sub_pc_type lu  -ksp_type gmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true "
     
     elseif prec == :kspgamg
-        options =  "-log_view -ksp_type fgmres -pc_fieldsplit_type symmetric_multiplicative -ksp_converged_reason -ksp_max_it 50 \
+        options =  "-log_view -ksp_type fgmres -pc_fieldsplit_type symmetric_multiplicative -ksp_converged_reason -ksp_max_it 50 -ksp_rtol 1e-5 -pc_fieldsplit_off_diag_use_amat true \
          -fieldsplit_vel_pc_type gamg -fieldsplit_vel_ksp_type gmres -fieldsplit_vel_ksp_converged_reason \
-         -fieldsplit_pres_pc_type gamg -fieldsplit_pres_pc_gamg_aggressive_coarsening 0.08 -fieldsplit_pres_pc_gamg_agg_nsmooths 10 -fieldsplit_pres_ksp_type gmres -fieldsplit_pres_ksp_converged_reason"
+         -fieldsplit_pres_pc_type gamg -fieldsplit_pres_pc_mg_levels 4 -fieldsplit_pres_pc_gamg_threshold 0.05 -fieldsplit_pres_ksp_type cg -fieldsplit_pres_ksp_converged_reason "
         
     
     elseif prec == :ksplu
-        options = "-pc_type asm -sub_pc_type lu  -ksp_type gmres -ksp_gmres_restart 30  -snes_converged_reason -ksp_converged_reason -ksp_error_if_not_converged true"
+        options = "-pc_type asm -sub_pc_type lu  -ksp_type gmres -ksp_gmres_restart 30  -ksp_converged_reason -ksp_error_if_not_converged true -log_view"
     
     else
         error("petsc_options $prec not recognized as valid")
